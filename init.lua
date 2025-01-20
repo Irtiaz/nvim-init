@@ -634,6 +634,7 @@ require('lazy').setup({
           filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'proto' },
           single_file_support = true,
         },
+        eslint = {},
         -- gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
