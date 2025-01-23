@@ -258,6 +258,15 @@ require('lazy').setup({
   },
   },
 
+  --lsp_line
+  {
+    'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+    config = function()
+      require('lsp_lines').setup()
+      vim.diagnostic.config { virtual_lines = { only_current_line = true } }
+    end,
+  },
+
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
   --    require('gitsigns').setup({ ... })
@@ -650,7 +659,6 @@ require('lazy').setup({
           filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'proto' },
           single_file_support = true,
         },
-        eslint = {},
         -- gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
@@ -660,8 +668,8 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
-        --
+        ts_ls = {},
+        html = {},
 
         lua_ls = {
           -- cmd = { ... },
