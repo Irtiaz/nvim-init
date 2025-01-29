@@ -493,6 +493,7 @@ require('lazy').setup({
       { 'williamboman/mason.nvim', opts = {} },
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
+      'nvim-java/nvim-java',
 
       -- Useful status updates for LSP.
       { 'j-hui/fidget.nvim', opts = {} },
@@ -661,6 +662,10 @@ require('lazy').setup({
           filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'proto' },
           single_file_support = true,
         },
+        ts_ls = {},
+        html = {},
+        jdtls = {},
+
         -- gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
@@ -670,8 +675,6 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
-        ts_ls = {},
-        html = {},
 
         lua_ls = {
           -- cmd = { ... },
@@ -711,12 +714,24 @@ require('lazy').setup({
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
+            if server_name == 'jdtls' then
+              return
+            end
             local server = servers[server_name] or {}
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for ts_ls)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
+          end,
+
+          jdtls = function()
+            require('java').setup {
+              -- custom jdtls configuration
+            }
+            require('lspconfig').jdtls.setup {
+              -- custom nvim-java configuration
+            }
           end,
         },
       }
