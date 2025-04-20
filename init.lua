@@ -639,6 +639,19 @@ require('lazy').setup({
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
+      local function load_workspace_config()
+        local project_config = vim.fn.getcwd() .. '/.nvim/project.lua'
+        if vim.fn.filereadable(project_config) == 1 then
+          local ok, config = pcall(dofile, project_config)
+          if ok then
+            return config
+          end
+        end
+        return {}
+      end
+
+      local project_config = load_workspace_config()
+
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
       --
@@ -648,6 +661,7 @@ require('lazy').setup({
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+
       local servers = {
         clangd = {
           capabilities = {
@@ -658,7 +672,13 @@ require('lazy').setup({
               },
             },
           },
-          cmd = { 'clangd' },
+          -- cmd = {
+          --   -- 'clangd'
+          --   '/home/irtiaz/.espressif/tools/esp-clang/esp-18.1.2_20240912/esp-clang/bin/clangd',
+          --   '--background-index',
+          --   '--query-driver=/home/irtiaz/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/bin/xtensa-esp32-elf-g*',
+          -- },
+          cmd = project_config.clangd and project_config.clangd.cmd or { 'clangd' },
           filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'proto' },
           single_file_support = true,
         },
