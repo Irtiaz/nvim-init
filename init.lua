@@ -244,6 +244,8 @@ require('lazy').setup({
   -- Use `opts = {}` to force a plugin to be loaded.
   --
 
+  { 'normen/vim-pio' },
+
   -- flash
   {
     'folke/flash.nvim',
