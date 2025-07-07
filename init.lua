@@ -688,6 +688,7 @@ require('lazy').setup({
         html = {},
         jdtls = {},
         pyright = {},
+        kotlin_language_server = {},
 
         -- gopls = {},
         -- rust_analyzer = {},
